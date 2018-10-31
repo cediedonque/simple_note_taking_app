@@ -2,12 +2,16 @@ package com.donque.simplenotetakingapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class dbhelper extends SQLiteOpenHelper {
+public class DbHelper extends SQLiteOpenHelper {
     public static final String TAG = "DbHelper";
     public static final String DB_NAME = "app_notes.db";
     public static final int DB_VERSION = 1;
@@ -19,7 +23,8 @@ public class dbhelper extends SQLiteOpenHelper {
     public static final String COL_CREATED_AT = "created_at";
     public static final String COL_UPDATED_AT = "updated_at";
 
-    public dbhelper(Context context) {
+    public DbHelper(Context context) {
+
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -55,8 +60,7 @@ public class dbhelper extends SQLiteOpenHelper {
         cv.put(COL_CREATED_AT, year + "-" + month + "-" + day);
         cv.put(COL_UPDATED_AT, year + "-" + month + "-" + day);
 
-        long id = db.insert(TABLE_NOTES, null, cv);
-        return id;
+        return db.insert(TABLE_NOTES, null, cv);
     }
 
     public boolean updateNote(SQLiteDatabase db, int id, String title, String body){
@@ -74,9 +78,27 @@ public class dbhelper extends SQLiteOpenHelper {
         return numberOfRowsAffected > 0;
     }
 
-    public boolean deleteNote(SQLiteDatabase db, int id){
+    public boolean deleteNote(SQLiteDatabase db, long id){
         int numberOfRowsDeleted = db.delete(TABLE_NOTES, COL_ID + "=" + id, null);
         return numberOfRowsDeleted > 0;
     }
 
+    public ArrayList<Note> getAllNotes(SQLiteDatabase db){
+        ArrayList<Note> notes = new ArrayList<>();
+
+        Cursor cursor = db.query(TABLE_NOTES, null, null, null, null, null, null);
+
+        while(cursor.moveToNext()){
+            int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
+            String title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
+            String body = cursor.getString(cursor.getColumnIndex(COL_BODY));
+            String createdAt = cursor.getString(cursor.getColumnIndex(COL_CREATED_AT));
+            String updatedAt = cursor.getString(cursor.getColumnIndex(COL_UPDATED_AT));
+
+            Note note = new Note(id, title, body, createdAt, updatedAt);
+            notes.add(note);
+        }
+
+        return notes;
+    }
 }

@@ -1,19 +1,20 @@
 package com.donque.simplenotetakingapp;
 
-public class note {
-    private long id = 1;
+package com.notes.arielmagbanua.simplenotetakingapp;
+
+public class Note {
+    private long id = -1;
     private String title = "";
     private String body = "";
-    private String createAt = "";
-    private String updateAt = "";
+    private String createdAt = "";
+    private String updatedAt = "";
 
-    public note(long id, String title, String body, String createAt, String updateAt) {
+    public Note(long id, String title, String body, String createdAt, String updatedAt) {
         this.id = id;
         this.title = title;
         this.body = body;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public long getId() {
@@ -40,19 +41,19 @@ public class note {
         this.body = body;
     }
 
-    public String getCreateAt() {
-        return createAt;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUpdateAt() {
-        return updateAt;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(String updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
